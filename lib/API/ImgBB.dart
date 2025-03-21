@@ -23,17 +23,8 @@ class ImgBB {
         print("Lỗi upload ảnh: ${responseData.body}");
         return null;
       }
-    } on SocketException catch (e) {
-      print("⚠ Lỗi mạng: Không thể kết nối đến Imgur. Kiểm tra mạng và thử lại.");
-      return null;
-    } on HttpException catch (e) {
-      print("⚠ Lỗi HTTP: $e");
-      return null;
-    } on FormatException catch (e) {
-      print("⚠ Lỗi format dữ liệu: $e");
-      return null;
     } on Exception catch (e) {
-      print("⚠ Lỗi không xác định: $e");
+      print("Lỗi không xác định: $e");
       return null;
     }
   }

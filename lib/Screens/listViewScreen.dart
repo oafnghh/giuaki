@@ -16,11 +16,32 @@ class _ListViewScreenState extends State<ListViewScreen> {
   String _searchQuery = "";
 
   void _deleteProduct(String id) async {
-    await _productService.deleteProduct(id);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Sản phẩm đã được xóa")),
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Xác nhận xóa"),
+        content: const Text("Bạn có chắc chắn muốn xóa sản phẩm này không?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false), 
+            child: const Text("Hủy"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true), 
+            child: const Text("Xóa", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
     );
+
+    if (confirmDelete == true) {
+      await _productService.deleteProduct(id);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Sản phẩm đã được xóa")),
+      );
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +93,9 @@ class _ListViewScreenState extends State<ListViewScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: ListTile(
                   title: Text(product["name"] ?? "Không có tên"),
-                  subtitle: Text("Giá: ${product["price"] ?? "Không rõ"}"),
+                  subtitle: Text(
+                      "Giá: ${product["price"] ?? "Không có"}\nDanh mục: ${product["category"] ?? "Không có"}",
+                    ),
                   leading: product["imageUrl"] != null && product["imageUrl"].isNotEmpty
                       ? Image.network(
                           product["imageUrl"],

@@ -130,14 +130,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
                   Row(
                     children: [
-                          imageUrl != null && imageUrl!.isNotEmpty
-                              ? Image.network(imageUrl!, width: 100, height: 100, fit: BoxFit.cover)
-                              : Container(
-                                  width: 100,
-                                  height: 100,
-                                  color: Colors.grey[300],
-                                  child: const Icon(Icons.image, size: 50),
-                                ),
+                          _imageFile != null
+                            ? Image.file(_imageFile!, width: 100, height: 100, fit: BoxFit.cover)
+                            : (imageUrl != null && imageUrl!.isNotEmpty
+                                ? Image.network(imageUrl!, width: 100, height: 100, fit: BoxFit.cover)
+                                : Container(
+                                    width: 100,
+                                    height: 100,
+                                    color: Colors.grey[300],
+                                    child: const Icon(Icons.image, size: 50),
+                                  )),
                       const SizedBox(width: 16),
                       ElevatedButton.icon(
                         onPressed: _pickImage,
